@@ -37,13 +37,13 @@ public class AnimalController(IAnimalService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult UpdateAnimal([FromBody] UpdateAnimalDTO dto)
+    public IActionResult UpdateAnimal([FromRoute] int idAnimal, [FromBody] UpdateAnimalDTO dto)
     {
-
-        var success = true; 
-        return success ? StatusCode(StatusCodes.Status200OK) : Conflict();
+        //TODO: validate dto?
+        //TODO: check input is JSON
+        var success = service.UpdateAnimal(idAnimal, dto);
+        return success ? StatusCode(StatusCodes.Status200OK, $"Updated Animal with id: {idAnimal}") : Conflict();
     }
-    
     [HttpDelete("{idAnimal:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -51,7 +51,7 @@ public class AnimalController(IAnimalService service) : ControllerBase
     
     public IActionResult DeleteAnimal([FromRoute] int idAnimal)
     {
-        var success = true; 
+        var success = service.DeleteAnimal(idAnimal);
         return success ? StatusCode(StatusCodes.Status200OK, $"Removed Animal with id: {idAnimal}") : Conflict();
     }
 }
