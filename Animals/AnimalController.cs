@@ -4,7 +4,6 @@ namespace AnimalRestAPI.Animals;
 
 [ApiController]
 [Route("/api/animals")]
-
 public class AnimalController : ControllerBase
 {
     [HttpGet("")]
@@ -18,40 +17,35 @@ public class AnimalController : ControllerBase
         {
             return BadRequest("Cannot sort by: " + orderBy);
         }
-
-        var animals = "All Animals"; //TODO: fetch from DB, order by orderBy ASC
+        var animals = "All Animals"; //TODO: fetch from DB
         return Ok(animals);
     }
-
     [HttpPost("")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public IActionResult CreateAnimal([FromBody] CreateAnimalDTO dto)
     {
-        //TODO: validate dto?
-        //TODO: make input JSON2 (application/*+json ?)
+   
         var success = true; //TODO: save in DB
         return success ? StatusCode(StatusCodes.Status201Created) : Conflict();
     }
-
     [HttpPut("{idAnimal:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult UpdateAnimal([FromBody] CreateAnimalDTO dto) //#TODO
+    public IActionResult UpdateAnimal([FromBody] UpdateAnimalDTO dto)
     {
-
-        var success = true; 
+   
+        var success = true; //TODO: update in DB
         return success ? StatusCode(StatusCodes.Status200OK) : Conflict();
     }
-
     [HttpDelete("{idAnimal:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult DeleteAnimal()
+    public IActionResult DeleteAnimal([FromRoute] int idAnimal)
     {
-        var success = true; 
+        var success = true; //TODO: delete in DB
         return success ? StatusCode(StatusCodes.Status200OK) : Conflict();
     }
 }
