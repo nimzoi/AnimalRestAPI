@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AnimalRestAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e35fbaee6cdfb236613789e2bdbb3ca3bceef660")]
 [assembly: System.Reflection.AssemblyProductAttribute("AnimalRestAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AnimalRestAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
