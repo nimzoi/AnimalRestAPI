@@ -4,7 +4,7 @@ namespace AnimalRestAPI.Animals;
 
 [ApiController]
 [Route("/api/animals")]
-public class AnimalController : ControllerBase
+public class AnimalController(IAnimalService service) : ControllerBase
 {
     [HttpGet("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -12,40 +12,46 @@ public class AnimalController : ControllerBase
     public IActionResult GetAllAnimals([FromQuery] string? orderBy)
     {
         orderBy ??= "name";
-        string[] validOrderParameters = ["name", "description", "category", "area"];
-        if (!validOrderParameters.Contains(orderBy))
+        if (!AnimalRepository.ValidOrderParameters.Contains(orderBy))
         {
-            return BadRequest("Cannot sort by: " + orderBy);
+            return BadRequest($"Cannot sort by: {orderBy}");
         }
-        var animals = "All Animals"; //TODO: fetch from DB
+
+        var animals = service.GetAllAnimals(orderBy);
         return Ok(animals);
     }
+
+    
     [HttpPost("")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
+    
     public IActionResult CreateAnimal([FromBody] CreateAnimalDTO dto)
     {
-   
-        var success = true; //TODO: save in DB
-        return success ? StatusCode(StatusCodes.Status201Created) : Conflict();
+  
+        var success = service.AddAnimal(dto);
+        return success ? StatusCode(StatusCodes.Status201Created, dto) : Conflict();
     }
+
     [HttpPut("{idAnimal:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult UpdateAnimal([FromBody] UpdateAnimalDTO dto)
     {
-   
-        var success = true; //TODO: update in DB
+
+        var success = true; 
         return success ? StatusCode(StatusCodes.Status200OK) : Conflict();
     }
+    
     [HttpDelete("{idAnimal:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    
     public IActionResult DeleteAnimal([FromRoute] int idAnimal)
     {
-        var success = true; //TODO: delete in DB
-        return success ? StatusCode(StatusCodes.Status200OK) : Conflict();
+        var success = true; 
+        return success ? StatusCode(StatusCodes.Status200OK, $"Removed Animal with id: {idAnimal}") : Conflict();
     }
 }
